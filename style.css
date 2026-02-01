@@ -1,0 +1,721 @@
+/* ============================================
+   RESET & BASE STYLES
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cormorant Garamond', serif;  /* Main body font */
+    font-style: italic;
+    font-weight: 300;
+    overflow: hidden;
+    background: #000;
+    color: #fff;
+}
+
+/* Headings use Playfair Display */
+h1, .timer-heading, .main-title, .birthday-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 300;
+}
+
+/* Keep buttons non-italic for better readability */
+button, .start-button {
+    font-family: 'Playfair Display', serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+/* ============================================
+   SCREEN TRANSITIONS
+   ============================================ */
+.screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.5s ease, visibility 1.5s ease;
+    z-index: 1;
+}
+
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+}
+
+/* ============================================
+   STARS BACKGROUND (with optional image)
+   ============================================ */
+.stars-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #000000, #0a0a1a, #050510);
+    overflow: hidden;
+}
+
+/* Background image overlay - Add your image here */
+.stars-background::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('galaxy.jpg'); /* ADD YOUR IMAGE PATH HERE */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.3; /* Adjust opacity (0.1 to 0.5 works well) */
+    z-index: 1;
+}
+
+/* Animated stars layer */
+.stars-background::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(2px 2px at 100px 200px, #fff, transparent),
+        radial-gradient(2px 2px at 300px 100px, #fff, transparent),
+        radial-gradient(2px 2px at 500px 400px, #fff, transparent),
+        radial-gradient(2px 2px at 700px 150px, #fff, transparent),
+        radial-gradient(2px 2px at 200px 500px, #fff, transparent),
+        radial-gradient(2px 2px at 600px 300px, #fff, transparent),
+        radial-gradient(2px 2px at 150px 350px, #fff, transparent),
+        radial-gradient(2px 2px at 450px 250px, #fff, transparent),
+        radial-gradient(2px 2px at 800px 450px, #fff, transparent),
+        radial-gradient(2px 2px at 250px 150px, #fff, transparent),
+        radial-gradient(2px 2px at 550px 50px, #fff, transparent),
+        radial-gradient(2px 2px at 350px 450px, #fff, transparent),
+        radial-gradient(3px 3px at 1200px 300px, #ffd700, transparent),
+        radial-gradient(3px 3px at 1400px 500px, #ff69b4, transparent),
+        radial-gradient(3px 3px at 1100px 150px, #87ceeb, transparent);
+    animation: twinkle 3s infinite ease-in-out;
+    z-index: 2;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* Dark overlay for better text readability */
+#timer-screen .stars-background::after,
+#title-screen .stars-background::after {
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 3;
+}
+
+/* ============================================
+   SCREEN 1: TIMER / LOCKED UNIVERSE
+   ============================================ */
+.timer-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.timer-heading {
+    font-size: 3rem;
+    font-weight: 300;
+    letter-spacing: 3px;
+    margin-bottom: 80px;
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(168, 192, 255, 0.8),
+                 0 0 60px rgba(168, 192, 255, 0.5),
+                 2px 2px 10px rgba(0, 0, 0, 0.8);
+    animation: fadeInDown 1.5s ease;
+}
+
+.countdown {
+    display: flex;
+    gap: 50px;
+    animation: fadeInUp 1.5s ease 0.5s backwards;
+}
+
+.time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.time-value {
+    font-size: 5rem;
+    font-weight: 300;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(20px);
+    padding: 30px 40px;
+    border-radius: 25px;
+    border: 2px solid rgba(168, 192, 255, 0.6);
+    box-shadow: 0 10px 50px rgba(168, 192, 255, 0.4),
+                inset 0 0 30px rgba(168, 192, 255, 0.1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 150px;
+    text-shadow: 0 0 20px rgba(168, 192, 255, 0.8);
+}
+
+.time-label {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    opacity: 0.9;
+    font-weight: 300;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(168, 192, 255, 0.5),
+                 1px 1px 5px rgba(0, 0, 0, 0.8);
+}
+
+/* ============================================
+   SCREEN 2: TITLE & INSTRUCTIONS
+   ============================================ */
+.title-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.main-title {
+    font-size: 4.5rem;
+    font-weight: 300;
+    letter-spacing: 5px;
+    margin-bottom: 50px;
+    color: #ffffff;
+    text-shadow: 0 0 40px rgba(168, 192, 255, 0.9),
+                 0 0 80px rgba(255, 192, 255, 0.6),
+                 2px 2px 15px rgba(0, 0, 0, 0.9);
+    animation: fadeInDown 1.5s ease;
+}
+
+.instruction-text {
+    font-size: 1.4rem;
+    font-weight: 300;
+    line-height: 2;
+    max-width: 800px;
+    margin-bottom: 60px;
+    opacity: 0;
+    min-height: 80px;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(168, 192, 255, 0.5),
+                 1px 1px 8px rgba(0, 0, 0, 0.9);
+}
+
+.instruction-text.typing {
+    opacity: 1;
+}
+
+.start-button {
+    position: relative;
+    padding: 20px 60px;
+    font-size: 1.2rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(168, 192, 255, 0.7);
+    border-radius: 50px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    text-shadow: 0 0 10px rgba(168, 192, 255, 0.8);
+    box-shadow: 0 0 30px rgba(168, 192, 255, 0.4);
+}
+
+.start-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 50px rgba(168, 192, 255, 0.6);
+    border-color: rgba(168, 192, 255, 1);
+    background: rgba(168, 192, 255, 0.2);
+}
+
+.button-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(168, 192, 255, 0.4), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.start-button:hover .button-glow {
+    opacity: 1;
+}
+
+/* ============================================
+   SCREEN 3: GALAXY CANVAS (3X LARGER)
+   ============================================ */
+#galaxy-screen {
+    overflow: hidden;
+    cursor: grab;
+}
+
+#galaxy-screen.grabbing {
+    cursor: grabbing;
+}
+
+.galaxy-container {
+    position: absolute;
+    width: 300vw; /* 3x viewport width */
+    height: 300vh; /* 3x viewport height */
+    transition: transform 0.1s ease-out;
+}
+
+#galaxy-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 100%);
+}
+
+/* ============================================
+   INTERACTIVE STARS (Smaller & More Realistic)
+   ============================================ */
+.star {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+}
+
+.star-core {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #ffffff, rgba(168, 192, 255, 0.8), transparent);
+    border-radius: 50%;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+/* Star points effect */
+.star-core::before,
+.star-core::after {
+    content: '';
+    position: absolute;
+    background: linear-gradient(90deg, transparent, #ffffff, transparent);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.star-core::before {
+    width: 20px;
+    height: 2px;
+}
+
+.star-core::after {
+    width: 2px;
+    height: 20px;
+}
+
+.star-glow {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: radial-gradient(circle, rgba(168, 192, 255, 0.4), transparent 70%);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: pulseGlow 2s infinite ease-in-out;
+}
+
+.star:hover {
+    transform: translate(-50%, -50%) scale(1.8);
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1));
+}
+
+.star:hover .star-core {
+    animation: pulseFast 0.5s infinite ease-in-out;
+}
+
+.star.locked {
+    opacity: 0.3;
+    cursor: not-allowed;
+    filter: drop-shadow(0 0 5px rgba(100, 100, 100, 0.5));
+}
+
+.star.locked .star-core {
+    background: radial-gradient(circle, #666, #999, transparent);
+}
+
+.star.locked .star-core::before,
+.star.locked .star-core::after {
+    background: linear-gradient(90deg, transparent, #999, transparent);
+}
+
+.lock-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10px;
+    z-index: 10;
+}
+
+.star.locked.shake {
+    animation: shake 0.5s ease;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.1); }
+}
+
+@keyframes pulseFast {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+    25% { transform: translate(-50%, -50%) rotate(-10deg); }
+    75% { transform: translate(-50%, -50%) rotate(10deg); }
+}
+
+/* Unlocked final star */
+.star.unlocked .star-core {
+    background: radial-gradient(circle, #ffd700, #ffa500, transparent);
+    animation: pulseBright 1.5s infinite ease-in-out;
+}
+
+.star.unlocked .star-core::before,
+.star.unlocked .star-core::after {
+    background: linear-gradient(90deg, transparent, #ffd700, transparent);
+}
+
+.star.unlocked {
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 1));
+}
+
+@keyframes pulseBright {
+    0%, 100% { 
+        transform: scale(1); 
+        box-shadow: 0 0 30px rgba(255, 215, 0, 1);
+    }
+    50% { 
+        transform: scale(1.4); 
+        box-shadow: 0 0 50px rgba(255, 215, 0, 1);
+    }
+}
+
+/* ============================================
+   MEMORY MODAL
+   ============================================ */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    position: relative;
+    z-index: 101;
+    background: rgba(15, 15, 30, 0.95);
+    border: 2px solid rgba(168, 192, 255, 0.4);
+    border-radius: 30px;
+    padding: 50px;
+    max-width: 1000px;
+    width: 90%;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8),
+                0 0 40px rgba(168, 192, 255, 0.3);
+    animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 300;
+}
+
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+    border-color: rgba(168, 192, 255, 0.8);
+}
+
+.memory-container {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+}
+
+.polaroid {
+    flex-shrink: 0;
+    background: #fff;
+    padding: 20px;
+    padding-bottom: 60px;
+    border-radius: 5px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    transform: rotate(-3deg);
+    transition: transform 0.3s ease;
+}
+
+.polaroid:hover {
+    transform: rotate(0deg) scale(1.05);
+}
+
+.polaroid-image {
+    width: 350px;
+    height: 350px;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.polaroid-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.memory-text {
+    flex: 1;
+    color: #fff;
+}
+
+.memory-text p {
+    font-size: 1.3rem;
+    line-height: 2;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeInText 0.8s ease 0.3s forwards;
+}
+
+/* ============================================
+   BIRTHDAY SCREEN
+   ============================================ */
+.birthday-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    padding: 0 40px;
+}
+
+.birthday-title {
+    font-size: 4rem;
+    font-weight: 300;
+    letter-spacing: 5px;
+    margin-bottom: 50px;
+    color: #ffffff;
+    text-shadow: 0 0 50px rgba(255, 215, 0, 0.9),
+                 0 0 100px rgba(255, 165, 0, 0.6),
+                 2px 2px 20px rgba(0, 0, 0, 0.9);
+    animation: fadeInDown 1.5s ease;
+}
+
+.birthday-message {
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 2;
+    max-width: 850px;
+    opacity: 0;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(168, 192, 255, 0.5),
+                 1px 1px 10px rgba(0, 0, 0, 0.9);
+    animation: fadeInUp 1.5s ease 0.5s forwards;
+}
+
+.floating-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.floating-particles::before,
+.floating-particles::after {
+    content: '✨';
+    position: absolute;
+    font-size: 24px;
+    animation: float 8s infinite ease-in-out;
+}
+
+.floating-particles::before {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.floating-particles::after {
+    top: 60%;
+    right: 15%;
+    animation-delay: 4s;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(80px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes fadeInText {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-120vh) translateX(80px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .timer-heading {
+        font-size: 2rem;
+    }
+    
+    .countdown {
+        gap: 25px;
+        flex-wrap: wrap;
+    }
+    
+    .time-value {
+        font-size: 3rem;
+        padding: 20px 25px;
+        min-width: 100px;
+    }
+    
+    .main-title {
+        font-size: 2.8rem;
+    }
+    
+    .instruction-text {
+        font-size: 1.1rem;
+    }
+    
+    .memory-container {
+        flex-direction: column;
+    }
+    
+    .polaroid-image {
+        width: 280px;
+        height: 280px;
+    }
+    
+    .birthday-title {
+        font-size: 3.5rem;
+    }
+    
+    .birthday-message {
+        font-size: 1.2rem;
+    }
+}

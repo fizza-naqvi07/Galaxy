@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Universe Awaits</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preload" as="image" href="galaxy.jpg">
+
+</head>
+<body>
+    
+    <!-- Screen 1: Timer / Locked Universe -->
+    <div id="timer-screen" class="screen active">
+        <div class="stars-background"></div>
+        <div class="timer-container">
+            <h1 class="timer-heading">Look who's turning 21?</h1>
+            <div class="countdown">
+                <div class="time-unit">
+                    <span class="time-value" id="days">00</span>
+                    <span class="time-label">days</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="hours">00</span>
+                    <span class="time-label">hours</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="minutes">00</span>
+                    <span class="time-label">minutes</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="seconds">00</span>
+                    <span class="time-label">seconds</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 2: Title & Instructions -->
+    <div id="title-screen" class="screen">
+        <div class="stars-background"></div>
+        <div class="title-container">
+            <h1 class="main-title">A Universe Made for You </h1>
+            <p class="instruction-text" id="instruction-text"></p>
+            <button class="start-button" id="start-button">
+                <span>Here you go...</span>
+                <div class="button-glow"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Screen 3: Galaxy Experience -->
+    <div id="galaxy-screen" class="screen">
+        <canvas id="galaxy-canvas"></canvas>
+        
+        <!-- Interactive Memory Stars -->
+        <div class="star interactive-star" data-star="1" style="top: 20%; left: 15%;">
+            <div class="star-glow"></div>
+            <div class="star-core"></div>
+        </div>
+        <div class="star interactive-star" data-star="2" style="top: 35%; left: 70%;">
+            <div class="star-glow"></div>
+            <div class="star-core"></div>
+        </div>
+        <div class="star interactive-star" data-star="3" style="top: 60%; left: 25%;">
+            <div class="star-glow"></div>
+            <div class="star-core"></div>
+        </div>
+        <div class="star interactive-star" data-star="4" style="top: 45%; left: 85%;">
+            <div class="star-glow"></div>
+            <div class="star-core"></div>
+        </div>
+        <div class="star interactive-star" data-star="5" style="top: 75%; left: 60%;">
+            <div class="star-glow"></div>
+            <div class="star-core"></div>
+        </div>
+        <div class="star interactive-star" data-star="6" style="top: 25%; left: 50%;">
+            <div class="star-glow"></div>
+            <div class="star-core"></div>
+        </div>
+        <div class="star interactive-star" data-star="7" style="top: 80%; left: 15%;">
+            <div class="star-glow"></div>
+            <div class="star-core"></div>
+        </div>
+        
+        <!-- Final Locked Star -->
+        <div class="star interactive-star locked" id="final-star" data-star="final" style="top: 50%; left: 50%;">
+            <div class="star-glow"></div>
+            <div class="star-core"></div>
+            <div class="lock-icon">🔒</div>
+        </div>
+    </div>
+
+    <!-- Memory Modal -->
+    <div id="memory-modal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="close-button" id="close-modal">×</button>
+            <div class="memory-container">
+                <div class="polaroid">
+                    <div class="polaroid-image">
+                        <img id="memory-image" src="" alt="Memory">
+                    </div>
+                </div>
+                <div class="memory-text">
+                    <p id="memory-description"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Birthday Screen -->
+    <div id="birthday-screen" class="screen">
+        <div class="stars-background"></div>
+        <div class="floating-particles"></div>
+        <div class="birthday-container">
+            <h1 class="birthday-title">Happy 21st Birthday Manahil</h1>
+            <p class="birthday-message">
+                I can’t believe that the girl I met on my very first day at Alpha has stayed by my side till today. We’ve been through so much together—seeing each other’s worst phases and celebrating the best ones—and even now, we’re still here, ranting about life and everything that comes with it. Allah was truly on my side when He gave me you.
+Even if I may not always be there to witness your achievements, I promise I’ll always stand by you in your lowest moments. I genuinely want to see you succeed in life—become a successful doctor, find the best life partner, and live a beautiful life ahead, no matter what it looks like. You’re not just my friend; you’re literally a sister to me, and I want to see you achieve everything you dream of.
+Every Fizza deserves a Manahil in her life. 
+                <br><br>
+                I love you. 💖
+            </p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
