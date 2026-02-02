@@ -4,9 +4,9 @@
 
 // TESTING: Set to 2 minutes from now
 const now = new Date();
-const UNLOCK_DATE = new Date(now.getTime() + 0 * 60 * 1000);
+//const UNLOCK_DATE = new Date(now.getTime() + 0 * 60 * 1000);
 // ACTUAL DATE: Uncomment this when ready and comment out the testing lines above
-//const UNLOCK_DATE = new Date('2026-02-03T00:00:00'); // February 3rd, 2026
+const UNLOCK_DATE = new Date('2026-02-03T00:00:00'); // February 3rd, 2026
 
 // Secret bypass code - only you know this!
 const SECRET_BYPASS = 'universe2026'; // Change this to your own secret code
@@ -630,3 +630,4 @@ document.addEventListener('DOMContentLoaded', () => {
     setupInteractiveStars();
 
 });
+
